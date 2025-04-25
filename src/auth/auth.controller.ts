@@ -1,8 +1,8 @@
 import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { RegisterDto } from './dto/register.dto'; // Создадим этот DTO
-import { LoginDto } from './dto/login.dto'; // Создадим этот DTO
+import { RegisterDto } from './dto/register.dto'; 
+import { LoginDto } from './dto/login.dto'; 
 
 @ApiTags('auth')
 @Controller('auth')
@@ -11,7 +11,7 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiBody({ type: RegisterDto }) // Указываем, что ожидаем тело запроса
+  @ApiBody({ type: RegisterDto }) //ожидаем body запроса
   @ApiResponse({ status: 201, description: 'User successfully registered' })
   @ApiResponse({ status: 400, description: 'User already exists' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
@@ -22,7 +22,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   @ApiOperation({ summary: 'Login a user and return JWT token' })
-  @ApiBody({ type: LoginDto }) // Указываем, что ожидаем тело запроса
+  @ApiBody({ type: LoginDto }) //ожидаем body запроса
   @ApiResponse({ status: 200, description: 'User successfully logged in' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @ApiResponse({ status: 500, description: 'Internal server error' })

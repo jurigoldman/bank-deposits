@@ -25,9 +25,22 @@ let DepositsService = class DepositsService {
     async findAll() {
         return this.depositModel.find().exec();
     }
+    async findMatching(amount, term) {
+        return this.depositModel.find({
+            amount: { $gte: amount },
+            term: { $gte: term },
+        }).exec();
+    }
     async create(createDepositDto) {
         const newDeposit = new this.depositModel(createDepositDto);
         return newDeposit.save();
+    }
+    async update(id, updateDepositDto) {
+        const existingDeposit = await this.depositModel.findByIdAndUpdate(id, updateDepositDto, { new: true }).exec();
+        if (!existingDeposit) {
+            throw new common_1.NotFoundException(`Deposit with ID "${id}" not found`);
+        }
+        return existingDeposit;
     }
 };
 exports.DepositsService = DepositsService;

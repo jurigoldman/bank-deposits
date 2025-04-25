@@ -15,6 +15,8 @@ const mongoose_2 = require("mongoose");
 let Deposit = class Deposit extends mongoose_2.Document {
     bank;
     interestRate;
+    amount;
+    term;
 };
 exports.Deposit = Deposit;
 __decorate([
@@ -25,6 +27,14 @@ __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", Number)
 ], Deposit.prototype, "interestRate", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true }),
+    __metadata("design:type", Number)
+], Deposit.prototype, "amount", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true }),
+    __metadata("design:type", Number)
+], Deposit.prototype, "term", void 0);
 exports.Deposit = Deposit = __decorate([
     (0, mongoose_1.Schema)()
 ], Deposit);

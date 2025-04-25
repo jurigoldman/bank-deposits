@@ -12,23 +12,38 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /**
+   * Регистрирует нового пользователя.
+   * @param email - Email пользователя.
+   * @param password - Пароль пользователя.
+   * @param role - Роль пользователя (по умолчанию 'user').
+   * @returns Созданный пользователь.
+   * @throws BadRequestException если пользователь с таким email уже существует.
+   */
   async register(email: string, password: string, role: string = 'user'): Promise<User> {
-    // Проверяем, существует ли пользователь с таким email
+    //Проверяем, существует ли пользователь с таким email
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
       throw new BadRequestException('User with this email already exists');
     }
 
-    // Хешируем пароль
+    //Хешируем пароль
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Создаем нового пользователя
+    //Создаем нового пользователя
     const user = new this.userModel({ email, password: hashedPassword, role });
 
-    // Сохраняем пользователя
+    //Сохраняем пользователя
     return user.save();
   }
 
+  /**
+   * Аутентифицирует пользователя и возвращает JWT токен.
+   * @param email - Email пользователя.
+   * @param password - Пароль пользователя.
+   * @returns Объект с JWT токеном и данными пользователя.
+   * @throws UnauthorizedException если учетные данные неверны.
+   */
   async login(email: string, password: string): Promise<{ access_token: string; user: User }> {
     const user = await this.userModel.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
