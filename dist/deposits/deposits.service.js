@@ -26,10 +26,25 @@ let DepositsService = class DepositsService {
         return this.depositModel.find().exec();
     }
     async findMatching(amount, term) {
-        return this.depositModel.find({
+        const deposits = await this.depositModel
+            .find({
             amount: { $gte: amount },
             term: { $gte: term },
-        }).exec();
+        })
+            .exec();
+        const depositsWithProfit = deposits.map(deposit => {
+            const depositObj = deposit.toObject();
+            return {
+                _id: depositObj._id.toString(),
+                bank: depositObj.bank,
+                interestRate: depositObj.interestRate,
+                amount: depositObj.amount,
+                term: depositObj.term,
+                __v: depositObj.__v,
+                profit: depositObj.amount * (depositObj.interestRate / 100) * (depositObj.term / 12),
+            };
+        });
+        return depositsWithProfit.sort((a, b) => b.profit - a.profit);
     }
     async create(createDepositDto) {
         const newDeposit = new this.depositModel(createDepositDto);

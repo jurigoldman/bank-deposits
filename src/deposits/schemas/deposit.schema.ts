@@ -1,4 +1,4 @@
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
@@ -10,10 +10,10 @@ export class Deposit extends Document {
   interestRate: number;
 
   @Prop({ required: true })
-  amount: number; //Добавлено поле для суммы
+  amount: number;
 
   @Prop({ required: true })
-  term: number; //Добавлено поле для срока (в месяцах, например)
+  term: number;
 }
 
 export const DepositSchema = SchemaFactory.createForClass(Deposit);

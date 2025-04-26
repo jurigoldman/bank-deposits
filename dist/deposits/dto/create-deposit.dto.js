@@ -15,6 +15,8 @@ const class_validator_1 = require("class-validator");
 class CreateDepositDto {
     bank;
     interestRate;
+    amount;
+    term;
 }
 exports.CreateDepositDto = CreateDepositDto;
 __decorate([
@@ -28,4 +30,16 @@ __decorate([
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
 ], CreateDepositDto.prototype, "interestRate", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 1000, description: 'Deposit amount' }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0),
+    __metadata("design:type", Number)
+], CreateDepositDto.prototype, "amount", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 12, description: 'Deposit term (in months)' }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(1),
+    __metadata("design:type", Number)
+], CreateDepositDto.prototype, "term", void 0);
 //# sourceMappingURL=create-deposit.dto.js.map

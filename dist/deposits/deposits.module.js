@@ -9,10 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DepositsModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const deposits_service_1 = require("./deposits.service");
 const deposits_controller_1 = require("./deposits.controller");
+const deposits_service_1 = require("./deposits.service");
 const deposit_schema_1 = require("./schemas/deposit.schema");
-const auth_module_1 = require("../auth/auth.module");
 let DepositsModule = class DepositsModule {
 };
 exports.DepositsModule = DepositsModule;
@@ -20,7 +19,6 @@ exports.DepositsModule = DepositsModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: deposit_schema_1.Deposit.name, schema: deposit_schema_1.DepositSchema }]),
-            auth_module_1.AuthModule,
         ],
         controllers: [deposits_controller_1.DepositsController],
         providers: [deposits_service_1.DepositsService],

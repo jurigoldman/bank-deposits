@@ -10,4 +10,14 @@ export class CreateDepositDto {
   @IsNumber()
   @Min(0)
   interestRate: number;
+
+  @ApiProperty({ example: 1000, description: 'Deposit amount' })
+  @IsNumber()
+  @Min(0)
+  amount: number;
+
+  @ApiProperty({ example: 12, description: 'Deposit term (in months)' })
+  @IsNumber()
+  @Min(1)
+  term: number;
 }

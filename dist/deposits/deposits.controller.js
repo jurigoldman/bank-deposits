@@ -28,6 +28,9 @@ let DepositsController = class DepositsController {
         return this.depositsService.findAll();
     }
     async compareDeposits(amount, term) {
+        if (amount < 0 || term < 1) {
+            throw new common_1.BadRequestException('Amount must be >= 0 and term must be >= 1');
+        }
         return this.depositsService.findMatching(amount, term);
     }
     async create(createDepositDto, req) {

@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, UseGuards, Request, ForbiddenException, Patch, Param, Query, ParseIntPipe, NotFoundException } from '@nestjs/common';
-import { DepositsService } from './deposits.service';
+import { Controller, Get, Post, Body, UseGuards, Request, ForbiddenException, Patch, Param, Query, ParseIntPipe, NotFoundException, BadRequestException } from '@nestjs/common';
+import { DepositsService, DepositWithProfit } from './deposits.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiBody, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { CreateDepositDto } from './dto/create-deposit.dto';
-import { UpdateDepositDto } from './dto/update-deposit.dto'; //Импортируем DTO для обновления
+import { UpdateDepositDto } from './dto/update-deposit.dto';
 
 @ApiTags('deposits')
 @ApiBearerAuth()
@@ -11,11 +11,6 @@ import { UpdateDepositDto } from './dto/update-deposit.dto'; //Импортир�
 export class DepositsController {
   constructor(private depositsService: DepositsService) {}
 
-  /**
-   * Получает список всех депозитов.
-   * Требует аутентификации пользователя.
-   * @returns Список депозитов.
-   */
   @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get all deposits' })
@@ -25,13 +20,6 @@ export class DepositsController {
     return this.depositsService.findAll();
   }
 
-  /**
-   * Сравнивает вклады по сумме и сроку.
-   * Требует аутентификации пользователя.
-   * @param amount - Минимальная сумма вклада.
-   * @param term - Минимальный срок вклада (в месяцах).
-   * @returns Список подходящих вкладов.
-   */
   @UseGuards(JwtAuthGuard)
   @Get('compare')
   @ApiOperation({ summary: 'Compare deposits by amount and term' })
@@ -43,23 +31,17 @@ export class DepositsController {
   async compareDeposits(
     @Query('amount', ParseIntPipe) amount: number,
     @Query('term', ParseIntPipe) term: number,
-  ) {
+  ): Promise<DepositWithProfit[]> {
+    if (amount < 0 || term < 1) {
+      throw new BadRequestException('Amount must be >= 0 and term must be >= 1');
+    }
     return this.depositsService.findMatching(amount, term);
   }
 
-  /**
-   * Создает новый депозит.
-   * Доступно только для администраторов.
-   * Требует аутентификации пользователя.
-   * @param createDepositDto - Данные для создания депозита.
-   * @param req - Объект запроса, содержащий информацию о пользователе.
-   * @returns Созданный депозит.
-   * @throws ForbiddenException если пользователь не является администратором.
-   */
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new deposit (admin only)' })
-  @ApiBody({ type: CreateDepositDto }) //Указываем тело запроса
+  @ApiBody({ type: CreateDepositDto })
   @ApiResponse({ status: 201, description: 'Deposit created' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Only admins can add deposits' })
@@ -67,21 +49,9 @@ export class DepositsController {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException('Only admins can add deposits');
     }
-    //Убедимся, что передаем все поля, включая amount и term
     return this.depositsService.create(createDepositDto);
   }
 
-  /**
-   * Обновляет существующий депозит.
-   * Доступно только для администраторов.
-   * Требует аутентификации пользователя.
-   * @param id - ID депозита для обновления.
-   * @param updateDepositDto - Данные для обновления.
-   * @param req - Объект запроса, содержащий информацию о пользователе.
-   * @returns Обновленный депозит.
-   * @throws ForbiddenException если пользователь не является администратором.
-   * @throws NotFoundException если депозит с указанным ID не найден.
-   */
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing deposit (admin only)' })
@@ -105,7 +75,7 @@ export class DepositsController {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
-      throw error; //Перебрасываем другие ошибки
+      throw error;
     }
   }
 }
