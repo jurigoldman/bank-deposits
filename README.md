@@ -37,7 +37,7 @@ $ npm run build
 $ npm run start:prod
 ```
 
-The application will be available at `http://localhost:3000` (or another port specified in the configuration).
+The application will be available at `http://localhost:3001` (or another port specified in the configuration).
 
 ## Testing
 

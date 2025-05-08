@@ -9,6 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const app_controller_1 = require("./app.controller");
+const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const deposits_module_1 = require("./deposits/deposits.module");
 let AppModule = class AppModule {
@@ -17,14 +19,12 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRootAsync({
-                useFactory: () => ({
-                    uri: 'mongodb://localhost/bank-deposits',
-                }),
-            }),
+            mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017/bank-deposits'),
             auth_module_1.AuthModule,
             deposits_module_1.DepositsModule,
         ],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

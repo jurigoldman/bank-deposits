@@ -6,7 +6,8 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    files: ['**/*.ts', '**/*.tsx'], // Указываем, что проверяем только .ts и .tsx файлы
+    ignores: ['eslint.config.mjs', 'dist/'], // Игнорируем сам конфиг и папку dist
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
