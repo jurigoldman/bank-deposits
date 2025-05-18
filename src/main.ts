@@ -17,8 +17,7 @@ async function bootstrap() {
     if (result.error) {
       console.error('MAIN.TS: Error loading .env file:', result.error);
     } else {
-      console.log('MAIN.TS: .env file loaded successfully. Parsed content:');
-      console.log(result.parsed);
+      console.log('MAIN.TS: .env file loaded successfully');
     }
   } else {
     console.error(`MAIN.TS: .env file NOT FOUND at: ${envPath}`);
@@ -29,13 +28,21 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.setGlobalPrefix('api');
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Bank Deposits API')
@@ -44,11 +51,11 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger UI is available on: http://localhost:${port}/api`);
+  console.log(`Swagger docs available at: http://localhost:${port}/api/docs`);
 }
 bootstrap();

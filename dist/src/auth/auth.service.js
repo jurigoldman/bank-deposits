@@ -18,7 +18,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
-const user_schema_1 = require("./schemas/user.schema");
+const user_schema_1 = require("../users/schemas/user.schema");
 let AuthService = class AuthService {
     userModel;
     jwtService;

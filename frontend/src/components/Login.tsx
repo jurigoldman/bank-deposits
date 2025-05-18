@@ -22,8 +22,9 @@ const Login = (): React.ReactElement => {
     } catch (err) {
       console.error('Login failed:', err);
       if (axios.isAxiosError(err)) {
-        const axiosError = err as AxiosError;
-        alert(`Login failed: ${axiosError.response?.data?.message || axiosError.message}`);
+        const axiosError = err as AxiosError<{ message?: string }>;
+        const errorMessage = (axiosError.response?.data?.message || axiosError.message) as string;
+        alert(`Login failed: ${errorMessage}`);
       } else {
         alert('Login failed. An unexpected error occurred.');
       }

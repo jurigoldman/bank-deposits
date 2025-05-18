@@ -14,6 +14,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const bank_offers_module_1 = require("./bank-offers/bank-offers.module");
+const users_1 = require("./users");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,24 +23,18 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                ignoreEnvFile: true,
+                envFilePath: '.env',
             }),
             mongoose_1.MongooseModule.forRootAsync({
                 imports: [config_1.ConfigModule],
-                useFactory: async (configService) => {
-                    const mongoUriFromConfig = configService.get('MONGODB_URI');
-                    console.log('APP_MODULE: MONGODB_URI from ConfigService:', mongoUriFromConfig);
-                    if (!mongoUriFromConfig) {
-                        console.error('APP_MODULE: MONGODB_URI is STILL not defined via ConfigService!');
-                    }
-                    return {
-                        uri: mongoUriFromConfig,
-                    };
-                },
+                useFactory: async (configService) => ({
+                    uri: configService.get('MONGODB_URI'),
+                }),
                 inject: [config_1.ConfigService],
             }),
             auth_module_1.AuthModule,
             bank_offers_module_1.BankOffersModule,
+            users_1.UsersModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
