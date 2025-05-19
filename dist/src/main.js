@@ -39,7 +39,7 @@ async function bootstrap() {
     }));
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Bank Deposits API')
-        .setDescription('API для сравнения банковских депозитов')
+        .setDescription('API for comparing bank deposit offers')
         .setVersion('1.0')
         .addBearerAuth()
         .build();

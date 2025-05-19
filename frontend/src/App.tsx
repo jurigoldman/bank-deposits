@@ -8,12 +8,9 @@ import { loadUser } from './features/auth/authSlice';
 import theme from './styles/theme';
 
 // Components
-import MainLayout from './components/layout/MainLayout';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import MainLayout from './components/Layout/MainLayout';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
-import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Initialize the app with user data if token exists
 const AppContent: React.FC = () => {
@@ -32,25 +29,11 @@ const AppContent: React.FC = () => {
       <CssBaseline />
       <Router>
         <Routes>
-          {/* Public routes */}
-          <Route path="/login" element={
-            token ? <Navigate to="/" replace /> : <LoginPage />
-          } />
-          <Route path="/register" element={
-            token ? <Navigate to="/" replace /> : <RegisterPage />
-          } />
-          
-          {/* Protected routes */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }>
+          <Route path="/" element={<MainLayout />}>
             <Route index element={<HomePage />} />
             <Route path="profile" element={<ProfilePage />} />
-            {/* Add more protected routes here */}
+            {/* Add more routes here */}
           </Route>
-          
           {/* 404 - Not Found */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

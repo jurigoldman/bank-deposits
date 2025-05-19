@@ -9,7 +9,7 @@ import { AccountCircle } from '@mui/icons-material';
 const MainLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, status } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,12 +22,6 @@ const MainLayout = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
-    handleClose();
-  };
-
-  const handleProfile = () => {
-    navigate('/profile');
     handleClose();
   };
 
@@ -43,7 +37,7 @@ const MainLayout = () => {
               sx={{ flexGrow: 1, cursor: 'pointer' }}
               onClick={() => navigate('/')}
             >
-              Банковские вклады
+              Bank Deposits
             </Typography>
 
             {user ? (
@@ -79,19 +73,14 @@ const MainLayout = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleProfile}>Профиль</MenuItem>
-                  <MenuItem onClick={handleLogout}>Выйти</MenuItem>
+                  <MenuItem disabled>{user.email}</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             ) : (
-              <>
-                <Button color="inherit" onClick={() => navigate('/login')}>
-                  Войти
-                </Button>
-                <Button color="inherit" onClick={() => navigate('/register')}>
-                  Регистрация
-                </Button>
-              </>
+              <Button color="inherit" onClick={() => navigate('/login')}>
+                Login
+              </Button>
             )}
           </Toolbar>
         </Container>
@@ -104,7 +93,7 @@ const MainLayout = () => {
       <Box component="footer" sx={{ py: 3, backgroundColor: (theme) => theme.palette.grey[200] }}>
         <Container maxWidth="lg">
           <Typography variant="body2" color="text.secondary" align="center">
-            © {new Date().getFullYear()} Банковские вклады. Все права защищены.
+            © {new Date().getFullYear()} Bank Deposits. All rights reserved.
           </Typography>
         </Container>
       </Box>
