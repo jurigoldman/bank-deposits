@@ -11,6 +11,11 @@ import theme from './styles/theme';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import LoginPage from './pages/LoginPage';
+import DepositsPage from './pages/DepositsPage';
+import CreateBankOffer from './components/CreateBankOffer';
+import CompareBankOffers from './components/CompareBankOffers';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Initialize the app with user data if token exists
 const AppContent: React.FC = () => {
@@ -29,10 +34,41 @@ const AppContent: React.FC = () => {
       <CssBaseline />
       <Router>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<MainLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            {/* Add more routes here */}
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="deposits"
+              element={
+                <ProtectedRoute>
+                  <DepositsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="create-deposit"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <CreateBankOffer />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="compare-deposits"
+              element={
+                <ProtectedRoute>
+                  <CompareBankOffers />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           {/* 404 - Not Found */}
           <Route path="*" element={<Navigate to="/" replace />} />
