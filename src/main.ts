@@ -4,7 +4,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors(); // Разрешаем CORS
+
+  // Настройка CORS
+  app.enableCors({
+    origin: 'http://localhost:3002', // конкретный источник фронтенда
+    credentials: true, // Разрешение credentials (если используются куки или авторизация)
+  });
 
   // Настройка Swagger
   const config = new DocumentBuilder()
@@ -16,6 +21,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document); // Swagger будет доступен по адресу /api
 
-  await app.listen(3001);
+  await app.listen(3001); // Запуск сервера на порту 3001
 }
 bootstrap();
