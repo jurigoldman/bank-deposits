@@ -15,7 +15,6 @@ const RegisterPage = () => {
   const { status, error } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    // Очищаем ошибки при размонтировании
     return () => {
       dispatch(clearError());
     };
@@ -41,10 +40,9 @@ const RegisterPage = () => {
       return;
     }
     
-    const resultAction = await dispatch(register({ email, password }));
+    const resultAction = await dispatch(register({ email, password, role: 'client' }));
     
     if (register.fulfilled.match(resultAction)) {
-      // Перенаправляем на домашнюю страницу после успешной регистрации
       navigate('/');
     }
   };
@@ -61,7 +59,10 @@ const RegisterPage = () => {
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
           <Typography component="h1" variant="h5" align="center" gutterBottom>
-            Регистрация
+            Регистрация нового клиента
+          </Typography>
+          <Typography variant="body2" align="center" color="textSecondary" sx={{ mb: 2 }}>
+            Создайте аккаунт, чтобы рассчитать депозиты
           </Typography>
           
           {error && (

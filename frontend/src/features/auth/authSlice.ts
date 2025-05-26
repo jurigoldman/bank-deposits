@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import apiClient from '../../api/apiClient';
-import { AppThunk } from '../../store';
 
 interface User {
   _id: string;
@@ -22,10 +21,10 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Асинхронные экшены
+// Асинхронный экшен для регистрации
 export const register = createAsyncThunk(
   'auth/register',
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  async (credentials: { email: string; password: string; role: string }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post('/auth/register', credentials);
       return response.data;
@@ -35,6 +34,7 @@ export const register = createAsyncThunk(
   }
 );
 
+// Асинхронный экшен для логина
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
@@ -47,6 +47,7 @@ export const login = createAsyncThunk(
   }
 );
 
+// Слайс
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -100,22 +101,23 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
-
 // Action to load user data
-// This is a thunk that can be dispatched like a regular action
-export const loadUser = (): AppThunk => async (dispatch, getState) => {
-  const { token } = getState().auth;
-  
-  if (!token) return;
-  
-  try {
-    const response = await apiClient.get('/auth/me');
-    dispatch(authSlice.actions.setUser(response.data.user));
-  } catch (error) {
-    // If there's an error (e.g., token is invalid), clear the token
-    dispatch(logout());
+export const loadUser = createAsyncThunk(
+  'auth/loadUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+      const response = await apiClient.get('/auth/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data.user;
+    } catch (error: any) {
+      localStorage.removeItem('token');
+      return rejectWithValue(error.response?.data?.message || 'Failed to load user');
+    }
   }
-};
+);
 
+export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
