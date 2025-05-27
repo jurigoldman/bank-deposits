@@ -1,1 +1,0 @@
-{"version":3,"file":"create-bank.dto.js","sourceRoot":"","sources":["../../../../../backend/src/banks/dto/create-bank.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAAuD;AACvD,6CAA8C;AAE9C,MAAa,aAAa;IAOxB,IAAI,CAAS;CACd;AARD,sCAQC;AADC;IANC,IAAA,qBAAW,EAAC;QACX,OAAO,EAAE,UAAU;QACnB,WAAW,EAAE,gBAAgB;KAC9B,CAAC;IACD,IAAA,0BAAQ,GAAE;IACV,IAAA,4BAAU,GAAE;;2CACA"}
