@@ -22,11 +22,11 @@ const RegisterPage = () => {
 
   const validateForm = () => {
     if (password !== confirmPassword) {
-      setPasswordError('Пароли не совпадают');
+      setPasswordError('Passwords do not match');
       return false;
     }
     if (password.length < 6) {
-      setPasswordError('Пароль должен содержать не менее 6 символов');
+      setPasswordError('Password must be at least 6 characters');
       return false;
     }
     setPasswordError('');
@@ -59,10 +59,10 @@ const RegisterPage = () => {
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
           <Typography component="h1" variant="h5" align="center" gutterBottom>
-            Регистрация нового клиента
+            Register New Client
           </Typography>
           <Typography variant="body2" align="center" color="textSecondary" sx={{ mb: 2 }}>
-            Создайте аккаунт, чтобы рассчитать депозиты
+            Create an account to calculate deposits
           </Typography>
           
           {error && (
@@ -90,7 +90,7 @@ const RegisterPage = () => {
               required
               fullWidth
               name="password"
-              label="Пароль"
+              label="Password"
               type="password"
               id="password"
               autoComplete="new-password"
@@ -105,7 +105,7 @@ const RegisterPage = () => {
               required
               fullWidth
               name="confirmPassword"
-              label="Подтвердите пароль"
+              label="Confirm Password"
               type="password"
               id="confirmPassword"
               autoComplete="new-password"
@@ -122,11 +122,11 @@ const RegisterPage = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? <CircularProgress size={24} /> : 'Зарегистрироваться'}
+              {status === 'loading' ? <CircularProgress size={24} /> : 'Register'}
             </Button>
             <Box sx={{ textAlign: 'center' }}>
               <Link to="/login" style={{ textDecoration: 'none' }}>
-                <Button color="primary">Уже есть аккаунт? Войти</Button>
+                <Button color="primary">Already have an account? Login</Button>
               </Link>
             </Box>
           </Box>

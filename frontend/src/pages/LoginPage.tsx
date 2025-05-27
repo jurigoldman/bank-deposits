@@ -38,10 +38,10 @@ const LoginPage = () => {
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
           <Typography component="h1" variant="h5" align="center" gutterBottom>
-            Вход в систему
+            Login
           </Typography>
           <Typography variant="body2" align="center" color="textSecondary" sx={{ mb: 2 }}>
-            Войдите как администратор или клиент
+            Log in as an administrator or client
           </Typography>
           
           {error && (
@@ -69,7 +69,7 @@ const LoginPage = () => {
               required
               fullWidth
               name="password"
-              label="Пароль"
+              label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -84,11 +84,11 @@ const LoginPage = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? <CircularProgress size={24} /> : 'Войти'}
+              {status === 'loading' ? <CircularProgress size={24} /> : 'Login'}
             </Button>
             <Box sx={{ textAlign: 'center' }}>
               <Link to="/register" style={{ textDecoration: 'none' }}>
-                <Button color="primary">Нет аккаунта? Зарегистрироваться</Button>
+                <Button color="primary">No account? Register</Button>
               </Link>
             </Box>
           </Box>

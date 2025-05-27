@@ -4,7 +4,7 @@ const axios_1 = require("axios");
 const store_1 = require("../store");
 const authSlice_1 = require("../features/auth/authSlice");
 const apiClient = axios_1.default.create({
-    baseURL: '/api',
+    baseURL: 'http://localhost:3001',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
