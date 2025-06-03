@@ -1,112 +1,103 @@
-# Bank Deposit Management System
+Bank Deposits Comparison System
+Project Overview
+This project is a web application designed to help users compare bank deposit offers and calculate potential earnings based on interest rates. The system allows users to log in, register, view a list of banks sorted by interest rate, and calculate deposit returns. It was developed as part of an academic assignment by Juri Goldman and Artur Grigorjan.
+Features
 
-## Description
+User authentication (login and registration).
+Display of active banks with sorting by interest rate.
+Deposit calculation based on user input and bank interest rates.
+Responsive and user-friendly interface using Material-UI.
+Backend API for managing bank data and user accounts.
 
-This NestJS-based application is a system for managing bank deposits. It allows users to register, log in, and view available deposits. Administrators can add new deposit types.
+Technologies Used
 
-## Technologies
+Frontend: React, Material-UI, Redux
+Backend: NestJS, MongoDB, Mongoose
+Version Control: Git, GitHub
+Build Tools: TypeScript, Node.js
 
-- **Framework:** NestJS
-- **Database:** MongoDB (using Mongoose)
-- **Authentication:** JWT (JSON Web Tokens)
-- **Validation:** Class-validator, Class-transformer
-- **API Documentation:** Swagger
+Installation and Setup
+Prerequisites
 
-## Installing Dependencies
+Node.js (version 14.x or later)
+MongoDB (local or remote instance)
+Git
 
-```bash
-$ npm install
-```
+Steps
 
-## Running the Application
+Clone the Repository
+git clone https://github.com/jurigoldman/bank-deposits.git
+cd bank-deposits
 
-### Development Mode
 
-```bash
-# Start with automatic restart on changes
-$ npm run start:dev
-```
+Install Dependencies
 
-### Production Mode
+For the frontend:cd frontend
+npm install
 
-```bash
-# Build the project
-$ npm run build
 
-# Run the built application
-$ npm run start:prod
-```
+For the backend:cd ../backend
+npm install
 
-The application will be available at `http://localhost:3001` (or another port specified in the configuration).
 
-## Testing
 
-```bash
-# Unit tests
-$ npm run test
 
-# End-to-end tests
-$ npm run test:e2e
+Configure Environment
 
-# Tests with code coverage
-$ npm run test:cov
-```
+Create a .env file in the backend directory with the following variables:MONGO_URI=mongodb://localhost:27017/bank_deposits
+PORT=3000
+JWT_SECRET=your-secret-key
 
-## Database Structure
 
-### `users` Collection
+Ensure MongoDB is running locally or update the MONGO_URI to your remote database.
 
-- `email` (String, required, unique): User's email.
-- `password` (String, required): Hashed user password.
-- `role` (String, enum: ['user', 'admin'], default: 'user'): User role.
 
-### `deposits` Collection
+Run the Application
 
-- `name` (String, required): Deposit name.
-- `interestRate` (Number, required): Interest rate.
-- `durationMonths` (Number, required): Deposit term in months.
+Start the backend:cd backend
+npm run start:dev
 
-## API Endpoints
 
-API documentation is available at `/api` after starting the application (Swagger UI).
+Start the frontend:cd ../frontend
+npm start
 
-### Authentication (`/auth`)
 
-- `POST /auth/register`: Register a new user.
-  - **Request Body:** `{ "email": "user@example.com", "password": "yourpassword", "role": "user" }` (the `role` field is optional, defaults to 'user')
-  - **Response:** Created user data.
-- `POST /auth/login`: User login.
-  - **Request Body:** `{ "email": "user@example.com", "password": "yourpassword" }`
-  - **Response:** `{ "access_token": "your_jwt_token", "user": { ...user_data } }`
+Open your browser and navigate to http://localhost:3000.
 
-### Deposits (`/deposits`)
 
-- `GET /deposits`: Get a list of all deposits (requires authentication).
-  - **Headers:** `Authorization: Bearer your_jwt_token`
-  - **Response:** Array of deposit objects.
-- `POST /deposits`: Create a new deposit (available only to administrators).
-  - **Headers:** `Authorization: Bearer your_jwt_token`
-  - **Request Body:** `{ "name": "Deposit Name", "interestRate": 5.5, "durationMonths": 12 }`
-  - **Response:** Created deposit data.
-- `GET /deposits/compare`: Compare deposits based on criteria (requires authentication).
-  - **Headers:** `Authorization: Bearer your_jwt_token`
-  - **Query Parameters:** `amount` (Number), `durationMonths` (Number)
-  - **Response:** Array of suitable deposit objects.
-- `PUT /deposits/:id`: Update an existing deposit (available only to administrators).
-  - **Headers:** `Authorization: Bearer your_jwt_token`
-  - **Request Body:** `{ "name": "Updated Deposit Name", "interestRate": 6.0, "durationMonths": 18 }` (fields are optional)
-  - **Response:** Updated deposit data.
 
-## API Testing
+Usage
 
-You can use Swagger UI (available at `/api` after launch) or tools like Postman to test the API.
+Login: Use the login page to access the system with your credentials.
+Register: New users can register via the registration form.
+Compare Banks: View the list of banks and sort by interest rate.
+Calculate Deposits: Input the amount and term to see calculated interest based on the selected bank.
 
-### Example Testing with Postman:
+Project Structure
 
-1.  **Registration:** Send a POST request to `/auth/register` with email and password in the request body (JSON).
-2.  **Login:** Send a POST request to `/auth/login` with the same email and password. Copy the `access_token` from the response.
-3.  **Get Deposits:** Send a GET request to `/deposits`. In the `Authorization` tab, select `Bearer Token` type and paste the copied `access_token`.
-4.  **Compare Deposits:** Send a GET request to `/deposits/compare` with `amount` and `durationMonths` as query parameters. Use the `Authorization` header with the Bearer Token.
-5.  **Create Deposit (for admin):** If you registered as an administrator (`role: 'admin'`), send a POST request to `/deposits` with deposit data in the body (JSON). Don't forget to add `Authorization: Bearer your_jwt_token`.
-6.  **Update Deposit (for admin):** Send a PUT request to `/deposits/:id` (replace `:id` with the actual deposit ID) with the updated fields in the body (JSON). Use the `Authorization` header.
+backend/: Contains the NestJS server, API routes, and MongoDB schemas.
+frontend/: Contains the React application with components and UI logic.
+dist/: Build artifacts (ignored in version control).
+node_modules/: Dependencies (ignored in version control).
 
+Team
+
+Juri Goldman: Project lead, frontend development.
+Artur Grigorjan: Backend development, database design.
+
+Issues and Limitations
+
+Initial login issues were encountered but have been resolved.
+The system currently supports a limited number of bank records.
+No advanced filtering or user profile features yet.
+
+Future Improvements
+
+Add more bank details (e.g., terms, conditions).
+Implement advanced filtering options.
+Introduce user profiles and deposit history.
+
+License
+This project is for educational purposes only and is not licensed for commercial use. Feel free to fork and modify for learning purposes.
+Acknowledgments
+We thank our instructor for guidance and support throughout the development process.
