@@ -1,4 +1,4 @@
-* Bank Deposits Comparison System
+#Bank Deposits Comparison System
 
 **Project Overview
 
